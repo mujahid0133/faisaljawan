@@ -24,11 +24,17 @@ class Vehicle(models.Model):
         return f"{self.make} ({self.number})"
 
 
+CATEGORY_CHOICES = [
+    ("goods", "Goods"),
+    ("service", "Service"),
+]
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     hs_code = models.CharField(max_length=50, blank=True, null=True)
     price_excl_tax = models.DecimalField(max_digits=10, decimal_places=2)
-    gst_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    category = models.ForeignKey('Taxes', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -58,11 +64,11 @@ class Invoice(models.Model):
         # Auto-generate invoice number
         if not self.invoice_no:
             last_invoice = Invoice.objects.order_by("-id").first()
-            if last_invoice and last_invoice.invoice_no.startswith("INV"):
-                last_no = int(last_invoice.invoice_no.replace("INV", ""))
-                self.invoice_no = f"INV{last_no+1:05d}"
+            if last_invoice and last_invoice.invoice_no.startswith("MFES"):
+                last_no = int(last_invoice.invoice_no.replace("MFES", ""))
+                self.invoice_no = f"MFES{last_no+1:05d}"
             else:
-                self.invoice_no = "INV00001"
+                self.invoice_no = "MFES00001"
         super().save(*args, **kwargs)
 
     def update_totals(self):
@@ -74,6 +80,11 @@ class Invoice(models.Model):
     def __str__(self):
         return f"{self.invoice_no} - {self.customer.name}"
 
+class Taxes(models.Model):
+    name = models.CharField(max_length=100 , choices=CATEGORY_CHOICES)
+    rate = models.DecimalField(max_digits=5, decimal_places=2)
+    def __str__(self):
+        return f"{self.name}"
 
 class InvoiceItem(models.Model):
     invoice = models.ForeignKey(Invoice, related_name="items", on_delete=models.CASCADE)
@@ -82,15 +93,15 @@ class InvoiceItem(models.Model):
     qty = models.IntegerField(default=1)
 
     price_excl_tax = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    gst_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    category = models.ForeignKey(Taxes, on_delete=models.SET_NULL, null=True, blank=True)
     tax_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     price_incl_tax = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
         if self.product:
             self.price_excl_tax = self.product.price_excl_tax
-            self.gst_rate = self.product.gst_rate
-        self.tax_amount = (self.price_excl_tax * self.qty) * (self.gst_rate / 100)
+            self.category = self.product.category
+        self.tax_amount = (self.price_excl_tax * self.qty) * (self.category.rate / 100)
         self.price_incl_tax = (self.price_excl_tax * self.qty) + self.tax_amount
         super().save(*args, **kwargs)
 

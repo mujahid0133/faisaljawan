@@ -1,0 +1,22 @@
+luxuries
+    no real time update of product price
+        if we change price of product after we have created invoice with it the price in invoice doesnot change
+        also what if we change the gst of bill and it will also not reflect on the invoice so we have to do something real time
+
+
+
+
+
+
+
+
+
+
+    improve code and redundancies and like the goods service catagory part
+        CAN BE DONE BY GIVING FAISAL UNCLE A STAFF ACCOUNT WITHOUT CHANGING THE CATAGORY PERMISIONS
+        
+
+remove decimal points
+
+
+designing

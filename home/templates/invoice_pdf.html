@@ -18,7 +18,7 @@
 
     <p><b>M. Fazal Ellahi & Sons</b><br>
        NTN: 1234567-8<br>
-       GST: 9876543-2
+       SRTN: 9876543-2
     </p>
 
     <p>
@@ -56,7 +56,7 @@
                 <td>{{ item.qty }}</td>
                 <td>{{ item.price_excl_tax|floatformat:2 }}</td>
                 <td>{{ item.price_excl_tax }}</td>
-                <td>{{ item.gst_rate|floatformat:2 }}%</td>
+                {% comment %} <td>{{ item.gst_rate|floatformat:2 }}%</td> {% endcomment %}
                 <td>{{ item.tax_amount|floatformat:2 }}</td>
                 <td>{{ item.price_incl_tax|floatformat:2 }}</td>
             </tr>
