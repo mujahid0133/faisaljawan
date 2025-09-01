@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; margin: 1cm; }
+        h1 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #000; padding: 5px; text-align: right; }
+        th { background: #eee; }
+        td.desc, th.desc { text-align: left; }
+        .totals { margin-top: 20px; width: 40%; float: right; }
+        .signature { margin-top: 60px; text-align: right; }
+    </style>
+</head>
+<body>
+    <h1>Invoice</h1>
+
+    <p><b>M. Fazal Ellahi & Sons</b><br>
+       NTN: 1234567-8<br>
+       GST: 9876543-2
+    </p>
+
+    <p>
+       <b>Invoice No:</b> {{ invoice.invoice_no }} <br>
+       <b>Date:</b> {{ invoice.date|date:"d-m-Y" }}
+    </p>
+
+    <p>
+       <b>Customer:</b> {{ invoice.customer.name }} <br>
+       <b>Vehicle:</b> {{ invoice.vehicle.number }} <br>
+       <b>Address:</b> {{ invoice.customer.address }} <br>
+       <b>NTN:</b> {{ invoice.customer.ntn }}
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>HS Code</th>
+                <th class="desc">Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Amount</th>
+                <th>Tax %</th>
+                <th>Tax Amt</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in invoice.items.all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.product.hs_code }}</td>
+                <td class="desc">{{ item.product.name }}</td>
+                <td>{{ item.qty }}</td>
+                <td>{{ item.price_excl_tax|floatformat:2 }}</td>
+                <td>{{ item.price_excl_tax }}</td>
+                <td>{{ item.gst_rate|floatformat:2 }}%</td>
+                <td>{{ item.tax_amount|floatformat:2 }}</td>
+                <td>{{ item.price_incl_tax|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="totals">
+        <tr><td><b>Subtotal</b></td><td>{{ invoice.total_excl_tax|floatformat:2 }}</td></tr>
+        <tr><td><b>Total Tax</b></td><td>{{ invoice.total_tax|floatformat:2 }}</td></tr>
+        <tr><td><b>Grand Total</b></td><td>{{ invoice.total_incl_tax|floatformat:2 }}</td></tr>
+    </table>
+
+    <div class="signature">
+        <p>Authorized Signatory ____________________</p>
+    </div>
+</body>
+</html>
