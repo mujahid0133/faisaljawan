@@ -19,7 +19,7 @@ from .utils.pdf import generate_invoice_pdf
 class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
     extra = 1
-    exclude = ("description", "price_excl_tax", "tax_amount", "price_incl_tax")
+    exclude = ("description", "tax_amount", "price_incl_tax", "category")
 
 
 @admin.register(Customer)
