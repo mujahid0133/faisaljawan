@@ -12,6 +12,7 @@ from reportlab.lib.units import cm, mm
 
 class BoxPlaceholder(Flowable):
     """Draw an empty framed box (used as the FBR logo placeholder)."""
+
     def __init__(self, width, height, stroke=1, dash=None):
         super().__init__()
         self.width = width
@@ -105,7 +106,8 @@ def generate_invoice_pdf(invoice, special_case=""):
     info_tbl = Table(
         [[
             Paragraph("<b>INVOICE #:</b>", normal),
-            Paragraph(f"{invoice.prefix if hasattr(invoice,'prefix') and invoice.prefix else ''}{special_case}{invoice.invoice_no}", normal),
+            Paragraph(
+                f"{invoice.prefix if hasattr(invoice,'prefix') and invoice.prefix else ''}{special_case}{invoice.invoice_no}", normal),
             Paragraph("<b>Date:</b>", normal),
             Paragraph(invoice.date.strftime("%d-%m-%Y"), normal),
         ]],
@@ -141,16 +143,24 @@ def generate_invoice_pdf(invoice, special_case=""):
 
     # Two-column details box (each cell wraps words only)
     comp_rows = [
-        [Paragraph("<b>Name :</b>", small), Paragraph(invoice.customer.name or "", small)],
-        [Paragraph("<b>Address :</b>", small), Paragraph(invoice.customer.address or "", small)],
-        [Paragraph("<b>STRN :</b>", small), Paragraph(invoice.customer.srtn or (getattr(invoice.customer, "strn", "") or ""), small)],
-        [Paragraph("<b>NTN :</b>", small), Paragraph(invoice.customer.ntn or "", small)],
+        [Paragraph("<b>Name :</b>", small),
+         Paragraph(invoice.customer.name or "", small)],
+        [Paragraph("<b>Address :</b>", small),
+         Paragraph(invoice.customer.address or "", small)],
+        [Paragraph("<b>STRN :</b>", small), Paragraph(invoice.customer.srtn or (
+            getattr(invoice.customer, "strn", "") or ""), small)],
+        [Paragraph("<b>NTN :</b>", small),
+         Paragraph(invoice.customer.ntn or "", small)],
     ]
     veh_rows = [
-        [Paragraph("<b>Make :</b>", small), Paragraph(getattr(invoice.vehicle, "make", "") or "", small)],
-        [Paragraph("<b>Vehicle-Number :</b>", small), Paragraph(getattr(invoice.vehicle, "number", "") or "", small)],
-        [Paragraph("<b>Customer Name:</b>", small), Paragraph(getattr(invoice, "customer_name", "") or (invoice.customer.name or ""), small)],
-        [Paragraph("<b>Customer No:</b>", small), Paragraph(getattr(invoice.customer, "phone", "") or "", small)],
+        [Paragraph("<b>Make :</b>", small),
+         Paragraph(getattr(invoice.vehicle, "make", "") or "", small)],
+        [Paragraph("<b>Vehicle-Number :</b>", small),
+         Paragraph(getattr(invoice.vehicle, "number", "") or "", small)],
+        [Paragraph("<b>Customer Name:</b>", small), Paragraph(getattr(invoice,
+                                                                      "customer_name", "") or (invoice.customer.name or ""), small)],
+        [Paragraph("<b>Customer No:</b>", small),
+         Paragraph(getattr(invoice.customer, "phone", "") or "", small)],
     ]
 
     def boxed_grid(rows):
@@ -191,24 +201,34 @@ def generate_invoice_pdf(invoice, special_case=""):
     ]
     data = [header_row]
 
-    idx = 0
+    # Filter items for each bill type
+    filtered_items = []
     for item in invoice.items.all():
-        # Preserve your special-case filtering
         if special_case == "F-":
-            if item.category.name.lower() != "goods":
+            if item.category and item.category.name.lower() != "goods":
                 continue
         elif special_case == "P-":
-            if item.category.name.lower() != "service":
+            if item.category and item.category.name.lower() != "service":
                 continue
+        filtered_items.append(item)
 
+    # Calculate totals for filtered items
+    subtotal = sum(item.price_excl_tax * item.qty for item in filtered_items)
+    total_tax = sum(item.tax_amount for item in filtered_items)
+    grand_total = sum(item.price_incl_tax for item in filtered_items)
+
+    idx = 0
+    for item in filtered_items:
         idx += 1
         row = [
-            Paragraph(str(idx), tbl_small_center),  
-            Paragraph(item.product.name or "", tbl_small),  # wide + wrapping
+            Paragraph(str(idx), tbl_small_center),
+            Paragraph(item.product.name or "", tbl_small),
             Paragraph(str(item.qty), tbl_small_right),
             Paragraph(f"{item.price_excl_tax:.2f}", tbl_small_right),
-            Paragraph(f"{(item.price_excl_tax * item.qty):.2f}", tbl_small_right),
-            Paragraph(f"{item.category.rate:.2f}%", tbl_small_right),
+            Paragraph(f"{(item.price_excl_tax * item.qty):.2f}",
+                      tbl_small_right),
+            Paragraph(f"{item.category.rate:.2f}%", tbl_small_right) if item.category else Paragraph(
+                "-", tbl_small_right),
             Paragraph(f"{item.tax_amount:.2f}", tbl_small_right),
             Paragraph(f"{item.price_incl_tax:.2f}", tbl_small_right),
         ]
@@ -244,9 +264,12 @@ def generate_invoice_pdf(invoice, special_case=""):
     # ========== TOTALS (keep your existing code behavior) ==========
     totals_tbl = Table(
         [
-            [Paragraph("<b>Subtotal</b>", normal), Paragraph(f"{invoice.total_excl_tax:.2f}", tbl_small_right)],
-            [Paragraph("<b>Total Tax</b>", normal), Paragraph(f"{invoice.total_tax:.2f}", tbl_small_right)],
-            [Paragraph("<b>Grand Total</b>", normal), Paragraph(f"{invoice.total_incl_tax:.2f}", tbl_small_right)],
+            [Paragraph("<b>Subtotal</b>", normal),
+             Paragraph(f"{subtotal:.2f}", tbl_small_right)],
+            [Paragraph("<b>Total Tax</b>", normal),
+             Paragraph(f"{total_tax:.2f}", tbl_small_right)],
+            [Paragraph("<b>Grand Total</b>", normal),
+             Paragraph(f"{grand_total:.2f}", tbl_small_right)],
         ],
         colWidths=[140*mm, 20*mm],
         style=[

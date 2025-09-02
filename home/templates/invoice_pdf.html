@@ -1,77 +1,309 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; margin: 1cm; }
-        h1 { text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #000; padding: 5px; text-align: right; }
-        th { background: #eee; }
-        td.desc, th.desc { text-align: left; }
-        .totals { margin-top: 20px; width: 40%; float: right; }
-        .signature { margin-top: 60px; text-align: right; }
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: #f8fafd;
+      }
+      body {
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        color: #222;
+      }
+      .invoice-a4 {
+        width: 190mm;
+        min-height: 277mm;
+        margin: 0 auto;
+        background: #fff;
+        padding: 0;
+        box-sizing: border-box;
+        border-radius: 12px;
+        box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      .company-title {
+        text-align: center;
+        font-size: 2.3em;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.1em;
+        margin-top: 32px;
+        text-transform: uppercase;
+        color: #1a237e;
+      }
+      .subtitle {
+        text-align: center;
+        font-size: 1.1em;
+        font-weight: bold;
+        background: #222;
+        color: #fff;
+        display: inline-block;
+        padding: 3px 22px 3px 22px;
+        border-radius: 4px;
+        margin-bottom: 0.3em;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+      }
+      .company-info {
+        text-align: center;
+        font-size: 1.05em;
+        margin-bottom: 0.1em;
+      }
+      .company-ids {
+        text-align: center;
+        font-size: 1em;
+        margin-bottom: 1.1em;
+        color: #263238;
+      }
+      .invoice-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 0.7em;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+      .invoice-label {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #1a237e;
+      }
+      .invoice-number {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #263238;
+      }
+      .invoice-date {
+        font-size: 1.1em;
+        color: #263238;
+      }
+      .section-titles {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: 0.2em;
+        margin-top: 1.2em;
+        margin-left: 20px;
+        margin-right: 20px;
+        color: #1a237e;
+      }
+      .details-table {
+        width: calc(100% - 40px);
+        margin-left: 20px;
+        margin-right: 20px;
+        border: 1px solid #bdbdbd;
+        border-radius: 6px;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 1.2em;
+        background: #f5f7fa;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+      }
+      .details-table td {
+        border: 1px solid #e0e0e0;
+        padding: 7px 12px;
+        font-size: 1em;
+      }
+      .details-table .label {
+        font-weight: bold;
+        width: 120px;
+        color: #1a237e;
+        background: #e3eafc;
+      }
+      .details-table .value {
+        width: 220px;
+        background: #fff;
+      }
+      .details-table .label-wide {
+        width: 180px;
+        background: #e3eafc;
+      }
+      .details-table .value-wide {
+        width: 320px;
+        background: #fff;
+      }
+      .details-table tr td {
+        vertical-align: top;
+      }
+      .items-table {
+        width: 94%;
+        max-width: 100%;
+        table-layout: fixed;
+        margin-left: 20px;
+        margin-right: 20px;
+        border: 1.5px solid #1a237e;
+        border-radius: 6px;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 1.2em;
+        background: #fff;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+      .items-table th,
+      .items-table td {
+        border: 1px solid #e0e0e0;
+        padding: 8px 10px;
+        font-size: 1em;
+        text-align: center;
+      }
+      .items-table th {
+        background: #e3eafc;
+        font-weight: bold;
+        color: #1a237e;
+        font-size: 1.05em;
+      }
+      .items-table .desc {
+        text-align: left;
+        font-size: 0.98em;
+      }
+      .items-table .type {
+        font-size: 0.98em;
+      }
+      .items-table .total-row td {
+        font-weight: bold;
+        background: #e3eafc;
+        color: #1a237e;
+      }
+      .signature-row {
+        margin-top: 2.5em;
+        font-size: 1.1em;
+        margin-left: 20px;
+      }
+      .signature-label {
+        margin-left: 70%;
+        font-weight: normal;
+      }
+      .footer-note {
+        position: absolute;
+        left: 20px;
+        bottom: 70px;
+        font-size: 0.85em;
+        color: #222;
+        width: 90%;
+        text-align: left;
+      }
+      @media print {
+        html,
+        body {
+          width: 210mm;
+          height: 297mm;
+        }
+        .invoice-a4 {
+          width: 190mm;
+          min-height: 277mm;
+          box-shadow: none;
+        }
+      }
     </style>
-</head>
-<body>
-    <h1>Invoice</h1>
-
-    <p><b>M. Fazal Ellahi & Sons</b><br>
-       NTN: 1234567-8<br>
-       SRTN: 9876543-2
-    </p>
-
-    <p>
-       <b>Invoice No:</b> {{ invoice.invoice_no }} <br>
-       <b>Date:</b> {{ invoice.date|date:"d-m-Y" }}
-    </p>
-
-    <p>
-       <b>Customer:</b> {{ invoice.customer.name }} <br>
-       <b>Vehicle:</b> {{ invoice.vehicle.number }} <br>
-       <b>Address:</b> {{ invoice.customer.address }} <br>
-       <b>NTN:</b> {{ invoice.customer.ntn }}
-    </p>
-
-    <table>
+  </head>
+  <body>
+    <div class="invoice-a4">
+      <div class="company-title">M. FAZAL ELLAHI &amp; SONS</div>
+      <div class="subtitle">AUTOMOBILE ENGINEER</div>
+      <div class="company-info">
+        Behind Dyal Singh Mansion, The Mall, Lahore.<br />
+        TEL: 0321-3434343,0321-3434343<br />
+      </div>
+      <div class="company-ids">
+        <b>NTN</b> : 1015078-1 &nbsp; <b>STRN</b>: 1015078-1 &nbsp; <b>PRA</b>:
+        1015078-1
+      </div>
+      <div class="invoice-row">
+        <div>
+          <span class="invoice-label">INVOICE #:</span>
+          <span class="invoice-number">{{ invoice.invoice_no }}</span>
+        </div>
+        <div>
+          <span class="invoice-label">Date:</span>
+          <span class="invoice-date">{{ invoice.date|date:"d-m-Y" }}</span>
+        </div>
+      </div>
+      <div class="section-titles">
+        <span>COMPANY DETAIL</span>
+        <span>Vehicle Detail</span>
+      </div>
+      <table class="details-table">
+        <tr>
+          <td class="label">Name :</td>
+          <td class="value">{{ invoice.customer.name }}</td>
+          <td class="label">Make :</td>
+          <td class="value">{{ invoice.vehicle.make }}</td>
+        </tr>
+        <tr>
+          <td class="label">Address :</td>
+          <td class="value-wide">{{ invoice.customer.address }}</td>
+          <td class="label">Vehicle-Number :</td>
+          <td class="value">{{ invoice.vehicle.number }}</td>
+        </tr>
+        <tr>
+          <td class="label">STRN :</td>
+          <td class="value">{{ invoice.customer.srtn }}</td>
+          <td class="label">Customer Name:</td>
+          <td class="value">{{ invoice.customer.name }}</td>
+        </tr>
+        <tr>
+          <td class="label">NTN :</td>
+          <td class="value">{{ invoice.customer.ntn }}</td>
+          <td class="label">Customer No:</td>
+          <td class="value">{{ invoice.customer.phone }}</td>
+        </tr>
+      </table>
+      <table class="items-table">
         <thead>
-            <tr>
-                <th>S.No</th>
-                <th>HS Code</th>
-                <th class="desc">Description</th>
-                <th>Qty</th>
-                <th>Unit Price</th>
-                <th>Amount</th>
-                <th>Tax %</th>
-                <th>Tax Amt</th>
-                <th>Total</th>
-            </tr>
+          <tr>
+            <th style="width: 45px">No.</th>
+            <th style="width: 32%">Description</th>
+            <th style="width: 60px">QTY</th>
+            <th style="width: 100px">Price<br />(excl. tax)</th>
+            <th style="width: 60px">GST</th>
+            <th style="width: 90px">Total Tax</th>
+            <th style="width: 110px">Price<br />(incl. tax)</th>
+          </tr>
         </thead>
         <tbody>
-        {% for item in invoice.items.all %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ item.product.hs_code }}</td>
-                <td class="desc">{{ item.product.name }}</td>
-                <td>{{ item.qty }}</td>
-                <td>{{ item.price_excl_tax|floatformat:2 }}</td>
-                <td>{{ item.price_excl_tax }}</td>
-                {% comment %} <td>{{ item.gst_rate|floatformat:2 }}%</td> {% endcomment %}
-                <td>{{ item.tax_amount|floatformat:2 }}</td>
-                <td>{{ item.price_incl_tax|floatformat:2 }}</td>
-            </tr>
-        {% endfor %}
+          {% for item in invoice.items.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="desc">{{ item.product.name }}</td>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.price_excl_tax|floatformat:2 }}</td>
+            <td>{{ item.category.rate|floatformat:2 }}%</td>
+            <td>{{ item.tax_amount|floatformat:2 }}</td>
+            <td>{{ item.price_incl_tax|floatformat:2 }}</td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
-
-    <table class="totals">
-        <tr><td><b>Subtotal</b></td><td>{{ invoice.total_excl_tax|floatformat:2 }}</td></tr>
-        <tr><td><b>Total Tax</b></td><td>{{ invoice.total_tax|floatformat:2 }}</td></tr>
-        <tr><td><b>Grand Total</b></td><td>{{ invoice.total_incl_tax|floatformat:2 }}</td></tr>
-    </table>
-
-    <div class="signature">
-        <p>Authorized Signatory ____________________</p>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="3">TOTAL</td>
+            <td>{{ invoice.total_excl_tax|floatformat:2 }}</td>
+            <td></td>
+            <td>{{ invoice.total_tax|floatformat:2 }}</td>
+            <td>{{ invoice.total_incl_tax|floatformat:2 }}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="signature-row">
+        <span class="signature-label">Signature:</span>
+      </div>
+      <div class="footer-note">
+        Customer's vehicles driven and stored entirely at customer's own risk as
+        regard fire, theft/damage
+      </div>
     </div>
-</body>
+  </body>
 </html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Invoice {{ special_case }}{{ invoice.invoice_no }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  /* ----- Page Setup for A4 Print ----- */
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  @media print {
+    .no-print { display: none !important; }
+    thead { display: table-header-group; }
+    tfoot { display: table-footer-group; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; page-break-after: auto; }
+    .avoid-break { page-break-inside: avoid; }
+    .page-break { page-break-before: always; }
+  }
+
+  /* ----- Base ----- */
+  :root {
+    --text: #111;
+    --muted: #666;
+    --line: #000;
+    --bg-chip: #000;
+    --chip-text: #fff;
+    --light-row: #f2f2f2;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    padding: 0; margin: 0;
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+    color: var(--text);
+  }
+  body { background: #fff; }
+  .invoice {
+    max-width: 190mm; /* inside A4 margins */
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* ----- Header ----- */
+  .header {
+    text-align: center;
+    margin-bottom: 6mm;
+  }
+  .title {
+    font-size: 18pt;
+    font-weight: 800;
+    letter-spacing: .5px;
+    margin: 0 0 3mm 0;
+  }
+  .chip {
+    display: inline-block;
+    background: var(--bg-chip);
+    color: var(--chip-text);
+    padding: 2mm 6mm;
+    border: 0.3mm solid #000;
+    font-size: 9.5pt;
+    font-weight: 700;
+    border-radius: 2mm;
+  }
+  .header-lines {
+    margin-top: 3mm;
+    font-size: 9pt;
+    line-height: 1.35;
+  }
+
+  /* ----- Boxed Info Row (Invoice #, Date) ----- */
+  .info-box {
+    width: 100%;
+    border: 0.3mm solid var(--line);
+    border-collapse: collapse;
+    margin: 6mm 0 5mm 0;
+    table-layout: fixed;
+  }
+  .info-box td {
+    border: 0.3mm solid var(--line);
+    padding: 2.2mm 2.8mm;
+    font-size: 10.5pt;
+    vertical-align: middle;
+    white-space: normal; /* wrap on spaces only */
+    word-break: normal;  /* don't break inside words */
+    overflow-wrap: normal;
+  }
+  .info-label { width: 28mm; font-weight: 700; }
+  .info-value { width: 70mm; }
+  .date-label { width: 20mm; font-weight: 700; }
+  .date-value { width: auto; }
+
+  /* ----- Section Headers (Company / Vehicle) ----- */
+  .section-head {
+    width: 100%;
+    border: 0.3mm solid var(--line);
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .section-head th {
+    background: var(--light-row);
+    border-right: 0.3mm solid var(--line);
+    padding: 2.2mm 2.8mm;
+    font-size: 10pt;
+    text-align: center;
+    font-weight: 700;
+  }
+  .section-head th:last-child { border-right: 0; }
+
+  /* ----- Two Column Details ----- */
+  .two-col {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 5mm;
+  }
+  .two-col td {
+    vertical-align: top;
+    width: 50%;
+  }
+  .boxed-grid {
+    width: 100%;
+    border: 0.3mm solid var(--line);
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .boxed-grid td {
+    border: 0.3mm solid var(--line);
+    padding: 2mm 2.6mm;
+    font-size: 9.5pt;
+    vertical-align: top;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal; /* wrap at spaces only */
+  }
+  .boxed-grid .label { width: 28mm; font-weight: 700; }
+  .boxed-grid .value { width: auto; }
+
+  /* ----- Items Table (No HS Code) ----- */
+  .items {
+    width: 100%;
+    border: 0.3mm solid var(--line);
+    border-collapse: collapse;
+    table-layout: fixed; /* keep widths stable; content grows downward */
+  }
+  .items thead th {
+    background: var(--light-row);
+    border: 0.3mm solid var(--line);
+    padding: 2mm 2.6mm;
+    font-size: 9pt;
+    text-align: center;
+    font-weight: 700;
+  }
+  .items td {
+    border: 0.3mm solid var(--line);
+    padding: 1.8mm 2.6mm;
+    font-size: 9pt; /* compact but readable */
+    vertical-align: top;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal; /* words wrap under, not mid-word */
+  }
+  /* column widths (sum ≈ 100%) */
+  .col-no     { width: 7%;  text-align: center; }
+  .col-desc   { width: 33%; } /* wide for description */
+  .col-qty    { width: 8%;  text-align: right; }
+  .col-unit   { width: 13%; text-align: right; }
+  .col-amount { width: 13%; text-align: right; }
+  .col-taxp   { width: 8%;  text-align: right; }
+  .col-taxamt { width: 9%;  text-align: right; }
+  .col-total  { width: 9%;  text-align: right; }
+
+  /* ----- Totals Table ----- */
+  .totals {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5mm;
+    table-layout: fixed;
+  }
+  .totals td {
+    border: 0.3mm solid var(--line);
+    padding: 2mm 3mm;
+    font-size: 10pt;
+  }
+  .totals .label { width: 140mm; font-weight: 700; }
+  .totals .value { width: auto; text-align: right; }
+
+  /* ----- Signature & Footer ----- */
+  .signature {
+    margin-top: 8mm;
+    font-size: 10.5pt;
+  }
+  .sign-line {
+    width: 70mm;
+    border-bottom: 0.4mm solid var(--line);
+    height: 8mm;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-left: 4mm;
+  }
+
+  .footer {
+    margin-top: 6mm;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  .footer td {
+    vertical-align: top;
+  }
+  .disclaimer {
+    font-size: 9pt;
+    color: var(--muted);
+    padding-right: 6mm;
+  }
+  .fbr-box {
+    width: 45mm; height: 22mm;
+    border: 0.4mm solid var(--line);
+    margin-left: auto;
+  }
+  .fbr-inv {
+    text-align: center;
+    font-size: 9pt;
+    margin-top: 2mm;
+  }
+
+  /* ----- Screen helpers ----- */
+  .actions {
+    margin: 10px 0 20px;
+  }
+  .btn {
+    padding: 8px 12px;
+    border: 1px solid #111;
+    background: #111;
+    color: #fff;
+    border-radius: 6px;
+    font: inherit;
+    cursor: pointer;
+  }
+  .btn:active { transform: translateY(1px); }
+</style>
+</head>
+<body>
+  <!-- Optional screen-only print button -->
+  <div class="actions no-print">
+    <button class="btn" onclick="window.print()">Print</button>
+  </div>
+
+  <div class="invoice">
+    <!-- Header -->
+    <header class="header avoid-break">
+      <h1 class="title">M. FAZAL ELLAHI &amp; SONS</h1>
+      <div class="chip">AUTOMOBILE ENGINEER</div>
+      <div class="header-lines">
+        <div>Behind Dyal Singh Mansion, The Mall, Lahore.</div>
+        <div>TEL: 0321-3434343, 0321-3434343</div>
+        <div>NTN : 1015078-1 &nbsp;&nbsp; STRN: 1015078-1 &nbsp;&nbsp; PRA: 1015078-1</div>
+      </div>
+    </header>
+
+    <!-- Invoice #: / Date -->
+    <table class="info-box avoid-break">
+      <tr>
+        <td class="info-label">INVOICE #:</td>
+        <td class="info-value">
+          {{ special_case }}{{ invoice.invoice_no }}
+        </td>
+        <td class="date-label">Date:</td>
+        <td class="date-value">{{ invoice.date|date:"d-m-Y" }}</td>
+      </tr>
+    </table>
+
+    <!-- Section headers -->
+    <table class="section-head avoid-break">
+      <thead>
+        <tr>
+          <th>COMPANY DETAIL</th>
+          <th>Vehicle Detail</th>
+        </tr>
+      </thead>
+    </table>
+
+    <!-- Company / Vehicle details -->
+    <table class="two-col avoid-break">
+      <tr>
+        <td>
+          <table class="boxed-grid">
+            <tr>
+              <td class="label">Name :</td>
+              <td class="value">{{ invoice.customer.name }}</td>
+            </tr>
+            <tr>
+              <td class="label">Address :</td>
+              <td class="value">{{ invoice.customer.address }}</td>
+            </tr>
+            <tr>
+              <td class="label">STRN :</td>
+              <td class="value">{{ invoice.customer.strn }}</td>
+            </tr>
+            <tr>
+              <td class="label">NTN :</td>
+              <td class="value">{{ invoice.customer.ntn }}</td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table class="boxed-grid">
+            <tr>
+              <td class="label">Make :</td>
+              <td class="value">{{ invoice.vehicle.make }}</td>
+            </tr>
+            <tr>
+              <td class="label">Vehicle-Number :</td>
+              <td class="value">{{ invoice.vehicle.number }}</td>
+            </tr>
+            <tr>
+              <td class="label">Customer Name:</td>
+              <td class="value">{{ invoice.customer.name }}</td>
+            </tr>
+            <tr>
+              <td class="label">Customer No:</td>
+              <td class="value">{{ invoice.customer.phone }}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Items -->
+    <table class="items">
+      <thead>
+        <tr>
+          <th class="col-no">No.</th>
+          <th class="col-desc">Description</th>
+          <th class="col-qty">QTY</th>
+          <th class="col-unit">Unit Price</th>
+          <th class="col-amount">Amount</th>
+          <th class="col-taxp">Tax %</th>
+          <th class="col-taxamt">Tax Amt</th>
+          <th class="col-total">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {# Server side: apply your F-/P- filtering exactly like your Python logic #}
+        {% with idx=0 %}
+        {% for item in invoice.items.all %}
+          {% if special_case == "F-" and item.category.name|lower != "goods" %}
+            {% continue %}
+          {% elif special_case == "P-" and item.category.name|lower != "service" %}
+            {% continue %}
+          {% endif %}
+          {% with forloop.counter as rownum %}
+          <tr>
+            <td class="col-no">{{ rownum }}</td>
+            <td class="col-desc">
+              {{ item.product.name }}
+            </td>
+            <td class="col-qty">{{ item.qty }}</td>
+            <td class="col-unit">{{ item.price_excl_tax|floatformat:2 }}</td>
+            <td class="col-amount">{{ item.price_excl_tax|mul:item.qty|floatformat:2 }}</td>
+            <td class="col-taxp">{{ item.category.rate|floatformat:2 }}%</td>
+            <td class="col-taxamt">{{ item.tax_amount|floatformat:2 }}</td>
+            <td class="col-total">{{ item.price_incl_tax|floatformat:2 }}</td>
+          </tr>
+          {% endwith %}
+        {% endfor %}
+        {% endwith %}
+      </tbody>
+    </table>
+
+    <!-- Totals (keep your code logic style) -->
+    <table class="totals avoid-break">
+      <tr>
+        <td class="label">Subtotal</td>
+        <td class="value">{{ invoice.total_excl_tax|floatformat:2 }}</td>
+      </tr>
+      <tr>
+        <td class="label">Total Tax</td>
+        <td class="value">{{ invoice.total_tax|floatformat:2 }}</td>
+      </tr>
+      <tr>
+        <td class="label">Grand Total</td>
+        <td class="value"><strong>{{ invoice.total_incl_tax|floatformat:2 }}</strong></td>
+      </tr>
+    </table>
+
+    <!-- Signature -->
+    <div class="signature avoid-break">
+      Signature: <span class="sign-line"></span>
+    </div>
+
+    <!-- Footer -->
+    <table class="footer avoid-break">
+      <tr>
+        <td style="width: 120mm;">
+          <div class="disclaimer">
+            Customer’s vehicle driven and stored entirely at customer’s own risk at repair firm;
+            theft, damage, or loss is not the firm’s responsibility.
+          </div>
+        </td>
+        <td style="width: 40mm; text-align: right;">
+          <div class="fbr-box"><!-- Empty frame for FBR logo --></div>
+          <div class="fbr-inv">FBR Invoice Number: {{ invoice.invoice_no }}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Helper filter for amount multiplication (optional) -->
+  <!-- If you don't have a mul filter, compute Amount in view or add a template filter -->
+</body>
+</html>

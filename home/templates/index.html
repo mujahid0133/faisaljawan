@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Template</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-size: 14px;
+      }
+      .v1_2 {
+        width: 595px;
+        height: 842px;
+        background: rgba(255, 255, 255, 1);
+        opacity: 1;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        overflow: hidden;
+      }
+      .v2_272 {
+        width: 81px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 208px;
+        left: 388px;
+        font-family: Inter;
+        font-weight: Bold;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v2_273 {
+        width: 108px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 206px;
+        left: 107px;
+        font-family: Inter;
+        font-weight: Bold;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v2_831 {
+        width: 544px;
+        height: 131px;
+        background: rgba(255, 255, 255, 1);
+        margin: 10px;
+        opacity: 1;
+        position: absolute;
+        top: 403px;
+        left: 26px;
+        overflow: hidden;
+      }
+      .v2_2032 {
+        width: 544px;
+        height: 131px;
+        background: rgba(255, 255, 255, 1);
+        opacity: 1;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        overflow: hidden;
+      }
+      .v9_1531 {
+        width: 544px;
+        height: 46px;
+        background: rgba(255, 255, 255, 0.00009999999747378752);
+        margin: 1px;
+        opacity: 1;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        overflow: hidden;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .v9_1540 {
+        width: 544px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.00009999999747378752);
+        margin: 1px;
+        opacity: 1;
+        position: absolute;
+        top: 46px;
+        left: 0px;
+        overflow: hidden;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .v9_1549 {
+        width: 544px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.00009999999747378752);
+        margin: 1px;
+        opacity: 1;
+        position: absolute;
+        top: 74px;
+        left: 0px;
+        overflow: hidden;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .v9_1558 {
+        width: 544px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.00009999999747378752);
+        margin: 1px;
+        opacity: 1;
+        position: absolute;
+        top: 102px;
+        left: 0px;
+        overflow: hidden;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .v5_413 {
+        width: 141px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 812px;
+        left: 46px;
+        font-family: Inter;
+        font-weight: Regular;
+        font-size: 6px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v5_414 {
+        width: 58px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 553px;
+        left: 430px;
+        font-family: Inter;
+        font-weight: Regular;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v2_2939 {
+        width: 140px;
+        height: 82px;
+        background: url("../images/v2_2939.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 1;
+        position: absolute;
+        top: 747px;
+        left: 418px;
+        overflow: hidden;
+      }
+      .v2_2945 {
+        width: 233px;
+        height: 10px;
+        background: url("../images/v2_2945.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 1;
+        position: absolute;
+        top: 819px;
+        left: 325px;
+        overflow: hidden;
+      }
+      .v9_1485 {
+        width: 400px;
+        height: 119px;
+        background: url("../images/v9_1485.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 1;
+        position: absolute;
+        top: 30px;
+        left: 98px;
+        overflow: hidden;
+      }
+      .v9_1486 {
+        width: 187px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0);
+        opacity: 1;
+        position: absolute;
+        top: 39px;
+        left: 107px;
+        border: 0.7791666388511658px solid rgba(0, 0, 0, 1);
+        overflow: hidden;
+      }
+      .v9_1487 {
+        width: 177px;
+        height: 17px;
+        background: rgba(0, 0, 0, 1);
+        opacity: 1;
+        position: absolute;
+        top: 42px;
+        left: 111px;
+        overflow: hidden;
+      }
+      .v9_1488 {
+        width: 400px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        font-family: Inter;
+        font-weight: Black;
+        font-size: 32px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1489 {
+        width: 170px;
+        color: rgba(255, 255, 255, 1);
+        position: absolute;
+        top: 42px;
+        left: 115px;
+        font-family: Inter;
+        font-weight: Black;
+        font-size: 14px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1490 {
+        width: 239px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 68px;
+        left: 81px;
+        font-family: Inter;
+        font-weight: Medium;
+        font-size: 11px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1491 {
+        width: 207px;
+        height: 15px;
+        background: url("../images/v9_1491.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 1;
+        position: absolute;
+        top: 85px;
+        left: 97px;
+        overflow: hidden;
+      }
+      .v9_1492 {
+        width: 91px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 28px;
+        font-family: Inter;
+        font-weight: Regular;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1493 {
+        width: 25px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        font-family: Inter;
+        font-weight: Regular;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1494 {
+        width: 88px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 119px;
+        font-family: Inter;
+        font-weight: Regular;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1495 {
+        width: 308px;
+        height: 16px;
+        background: url("../images/v9_1495.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 1;
+        position: absolute;
+        top: 103px;
+        left: 46px;
+        overflow: hidden;
+      }
+      .v9_1496 {
+        width: 94px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1497 {
+        width: 98px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 107px;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1498 {
+        width: 90px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 218px;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1501 {
+        width: 544px;
+        height: 21px;
+        background: url("../images/v9_1501.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 1;
+        position: absolute;
+        top: 165px;
+        left: 21px;
+        overflow: hidden;
+      }
+      .v9_1502 {
+        width: 151px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        font-family: Inter;
+        font-weight: Bold;
+        font-size: 17px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1503 {
+        width: 104px;
+        color: rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 5px;
+        left: 440px;
+        font-size: 12px;
+        opacity: 1;
+        text-align: left;
+      }
+      .v9_1633 {
+        width: 544px;
+        height: 156px;
+        background: rgba(255, 255, 255, 1);
+        opacity: 1;
+        position: absolute;
+        top: 235px;
+        left: 26px;
+        overflow: hidden;
+      }
+      .v9_1634 {
+        width: 544px;
+        height: 160px;
+        background: rgba(255, 255, 255, 1);
+        opacity: 1;
+        position: absolute;
+        top: 2px;
+        left: 0px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        overflow: hidden;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+      .name {
+        color: #fff;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: #f8fafd;
+      }
+      body {
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        color: #222;
+      }
+      .invoice-a4 {
+        width: 190mm;
+        min-height: 277mm;
+        margin: 0 auto;
+        background: #fff;
+        padding: 0;
+        box-sizing: border-box;
+        border-radius: 12px;
+        box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      .company-title {
+        text-align: center;
+        font-size: 2.3em;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.1em;
+        margin-top: 32px;
+        text-transform: uppercase;
+        color: #1a237e;
+      }
+      .subtitle {
+        text-align: center;
+        font-size: 1.1em;
+        font-weight: bold;
+        background: #222;
+        color: #fff;
+        display: inline-block;
+        padding: 3px 22px 3px 22px;
+        border-radius: 4px;
+        margin-bottom: 0.3em;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+      }
+      .company-info {
+        text-align: center;
+        font-size: 1.05em;
+        margin-bottom: 0.1em;
+      }
+      .company-ids {
+        text-align: center;
+        font-size: 1em;
+        margin-bottom: 1.1em;
+        color: #263238;
+      }
+      .invoice-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 0.7em;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+      .invoice-label {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #1a237e;
+      }
+      .invoice-number {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #263238;
+      }
+      .invoice-date {
+        font-size: 1.1em;
+        color: #263238;
+      }
+      .section-titles {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: 0.2em;
+        margin-top: 1.2em;
+        margin-left: 20px;
+        margin-right: 20px;
+        color: #1a237e;
+      }
+      .details-table {
+        width: calc(100% - 40px);
+        margin-left: 20px;
+        margin-right: 20px;
+        border: 1px solid #bdbdbd;
+        border-radius: 6px;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 1.2em;
+        background: #f5f7fa;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+      }
+      .details-table td {
+        border: 1px solid #e0e0e0;
+        padding: 7px 12px;
+        font-size: 1em;
+      }
+      .details-table .label {
+        font-weight: bold;
+        width: 120px;
+        color: #1a237e;
+        background: #e3eafc;
+      }
+      .details-table .value {
+        width: 220px;
+        background: #fff;
+      }
+      .details-table .label-wide {
+        width: 180px;
+        background: #e3eafc;
+      }
+      .details-table .value-wide {
+        width: 320px;
+        background: #fff;
+      }
+      .details-table tr td {
+        vertical-align: top;
+      }
+      .items-table {
+        width: 94%;
+        max-width: 100%;
+        table-layout: fixed;
+        margin-left: 20px;
+        margin-right: 20px;
+        border: 1.5px solid #1a237e;
+        border-radius: 6px;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 1.2em;
+        background: #fff;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+      .items-table th,
+      .items-table td {
+        border: 1px solid #e0e0e0;
+        padding: 8px 10px;
+        font-size: 1em;
+        text-align: center;
+      }
+      .items-table th {
+        background: #e3eafc;
+        font-weight: bold;
+        color: #1a237e;
+        font-size: 1.05em;
+      }
+      .items-table .desc {
+        text-align: left;
+        font-size: 0.98em;
+      }
+      .items-table .type {
+        font-size: 0.98em;
+      }
+      .items-table .total-row td {
+        font-weight: bold;
+        background: #e3eafc;
+        color: #1a237e;
+      }
+      .signature-row {
+        margin-top: 2.5em;
+        font-size: 1.1em;
+        margin-left: 20px;
+      }
+      .signature-label {
+        margin-left: 70%;
+        font-weight: normal;
+      }
+      .footer-note {
+        position: absolute;
+        left: 20px;
+        bottom: 70px;
+        font-size: 0.85em;
+        color: #222;
+        width: 90%;
+        text-align: left;
+      }
+      .fbr-footer {
+        position: absolute;
+        left: 20px;
+        bottom: 10px;
+        width: calc(100% - 40px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.95em;
+      }
+      .fbr-logo {
+        height: 38px;
+      }
+      .fbr-invoice {
+        color: #003366;
+        font-size: 1em;
+        font-weight: 500;
+        margin-left: 10px;
+      }
+      @media print {
+        html,
+        body {
+          width: 210mm;
+          height: 297mm;
+        }
+        .invoice-a4 {
+          width: 190mm;
+          min-height: 277mm;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-a4">
+      <div class="company-title">M. FAZAL ELLAHI &amp; SONS</div>
+      <div class="subtitle">AUTOMOBILE ENGINEER</div>
+      <div class="company-info">
+        Behind Dyal Singh Mansion, The Mall, Lahore.<br />
+        TEL: 0321-3434343,0321-3434343<br />
+      </div>
+      <div class="company-ids">
+        <b>NTN</b> : 1015078-1 &nbsp; <b>STRN</b>: 1015078-1 &nbsp; <b>PRA</b>:
+        1015078-1
+      </div>
+      <div class="invoice-row">
+        <div>
+          <span class="invoice-label">INVOICE #:</span>
+          <span class="invoice-number">{{ invoice.invoice_no }}</span>
+        </div>
+        <div>
+          <span class="invoice-label">Date:</span>
+          <span class="invoice-date">{{ invoice.date|date:"d-m-Y" }}</span>
+        </div>
+      </div>
+      <div class="section-titles">
+        <span>COMPANY DETAIL</span>
+        <span>Vehicle Detail</span>
+      </div>
+      <table class="details-table">
+        <tr>
+          <td class="label">Name :</td>
+          <td class="value">{{ invoice.customer.name }}</td>
+          <td class="label">Make :</td>
+          <td class="value">{{ invoice.vehicle.make }}</td>
+        </tr>
+        <tr>
+          <td class="label">Address :</td>
+          <td class="value-wide">{{ invoice.customer.address }}</td>
+          <td class="label">Vehicle-Number :</td>
+          <td class="value">{{ invoice.vehicle.number }}</td>
+        </tr>
+        <tr>
+          <td class="label">STRN :</td>
+          <td class="value">{{ invoice.customer.srtn }}</td>
+          <td class="label">Customer Name:</td>
+          <td class="value">{{ invoice.customer.name }}</td>
+        </tr>
+        <tr>
+          <td class="label">NTN :</td>
+          <td class="value">{{ invoice.customer.ntn }}</td>
+          <td class="label">Customer No:</td>
+          <td class="value">{{ invoice.customer.phone }}</td>
+        </tr>
+      </table>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th style="width: 45px">No.</th>
+            <th style="width: 32%">Description</th>
+            <th style="width: 60px">QTY</th>
+            <th style="width: 100px">Price<br />(excl. tax)</th>
+            <th style="width: 60px">TAX</th>
+            <th style="width: 90px">Total Tax</th>
+            <th style="width: 110px">Price<br />(incl. tax)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in invoice.items.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="desc">{{ item.product.name }}</td>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.price_excl_tax|floatformat:2 }}</td>
+            <td>{{ item.category.rate|floatformat:0 }}%</td>
+            <td>{{ item.tax_amount|floatformat:2 }}</td>
+            <td>{{ item.price_incl_tax|floatformat:2 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="3">TOTAL</td>
+            <td>{{ invoice.total_excl_tax|floatformat:2 }}</td>
+            <td></td>
+            <td>{{ invoice.total_tax|floatformat:2 }}</td>
+            <td>{{ invoice.total_incl_tax|floatformat:2 }}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="signature-row">
+        <span class="signature-label">Signature:</span>
+      </div>
+      <div class="footer-note">
+        Customer's vehicles driven and stored entirely at customer's own risk as
+        regard fire, theft/damage
+      </div>
+    </div>
+  </body>
+</html>
