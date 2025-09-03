@@ -725,16 +725,17 @@
       <div class="subtitle">AUTOMOBILE ENGINEER</div>
       <div class="company-info">
         Behind Dyal Singh Mansion, The Mall, Lahore.<br />
-        TEL: 0321-3434343,0321-3434343<br />
+        TEL: 0331-4377965 , 0309-4756157<br />
       </div>
       <div class="company-ids">
-        <b>NTN</b> : 1015078-1 &nbsp; <b>STRN</b>: 1015078-1 &nbsp; <b>PRA</b>:
+        <b>NTN</b>: 1015078-1 &nbsp; <b>STRN</b>: 1015078-1 &nbsp; <b>PRA</b>:
         1015078-1
       </div>
       <div class="invoice-row">
         <div>
           <span class="invoice-label">INVOICE #:</span>
-          <span class="invoice-number">{{ invoice.invoice_no }}</span>
+          <span class="invoice-number">
+            {% if special_case == "goods" %}F-{% endif %}{% if special_case == "services" %}P-{% endif %}{{ invoice.invoice_no }}</span>
         </div>
         <div>
           <span class="invoice-label">Date:</span>
