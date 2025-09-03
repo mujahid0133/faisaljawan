@@ -755,7 +755,7 @@
         <tr>
           <td class="label">Address :</td>
           <td class="value-wide">{{ invoice.customer.address }}</td>
-          <td class="label">Vehicle-Number :</td>
+          <td style="width: 160px" class="label">Vehicle-Number :</td>
           <td class="value">{{ invoice.vehicle.number }}</td>
         </tr>
         <tr>
@@ -784,25 +784,33 @@
           </tr>
         </thead>
         <tbody>
-          {% for item in invoice.items.all %}
+          {% for item in items %}
           <tr>
             <td>{{ forloop.counter }}</td>
             <td class="desc">{{ item.product.name }}</td>
             <td>{{ item.qty }}</td>
             <td>{{ item.price_excl_tax|floatformat:2 }}</td>
-            <td>{{ item.category.rate|floatformat:0 }}%</td>
+            <td>
+              {% if item.category %}{{ item.category.rate|floatformat:0 }}%{% else %}-{% endif %}
+            </td>
             <td>{{ item.tax_amount|floatformat:2 }}</td>
             <td>{{ item.price_incl_tax|floatformat:2 }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" style="text-align: center">
+              No items found for this invoice.
+            </td>
           </tr>
           {% endfor %}
         </tbody>
         <tfoot>
           <tr class="total-row">
             <td colspan="3">TOTAL</td>
-            <td>{{ invoice.total_excl_tax|floatformat:2 }}</td>
+            <td>{{ subtotal|floatformat:2 }}</td>
             <td></td>
-            <td>{{ invoice.total_tax|floatformat:2 }}</td>
-            <td>{{ invoice.total_incl_tax|floatformat:2 }}</td>
+            <td>{{ total_tax|floatformat:2 }}</td>
+            <td>{{ grand_total|floatformat:2 }}</td>
           </tr>
         </tfoot>
       </table>

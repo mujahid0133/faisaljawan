@@ -95,17 +95,17 @@ class InvoiceAdmin(admin.ModelAdmin):
     # ✅ Print button
     def print_complete_bill(self, obj):
         return format_html('<a class="button" href="{}">Complete Bill</a>',
-                           f"/admin/home/invoice/{obj.id}/C-/print/")
+                           f"/invoice/{obj.id}/pdf/")
     print_complete_bill.short_description = "Print Complete Bill"
 
     def print_fbr_bill(self, obj):
         return format_html('<a class="button" href="{}">FBR Bill</a>',
-                           f"/admin/home/invoice/{obj.id}/F-/print/")
+                           f"/invoice/{obj.id}/pdf/goods/")
     print_fbr_bill.short_description = "Print FBR Bill"
 
     def print_pra_bill(self, obj):
         return format_html('<a class="button" href="{}">PRA Bill</a>',
-                           f"/admin/home/invoice/{obj.id}/P-/print/")
+                           f"/invoice/{obj.id}/pdf/services/")
     print_pra_bill.short_description = "Print PRA Bill"
 
     # ✅ Add custom URL for printing

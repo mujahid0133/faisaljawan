@@ -16,9 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from home.views import invoice_pdf
+from home.views import invoice_pdf, invoice_pdf_goods, invoice_pdf_services
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("invoice/<int:pk>/pdf/", invoice_pdf),
+    path("invoice/<int:pk>/pdf/goods/",
+         invoice_pdf_goods, name="invoice_pdf_goods"),
+    path("invoice/<int:pk>/pdf/services/",
+         invoice_pdf_services, name="invoice_pdf_services"),
 ]
