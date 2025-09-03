@@ -3,6 +3,16 @@ from django.utils import timezone
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
+# class CompanyDetail(models.Model):
+#     name = models.CharField(max_length=255)
+#     address = models.TextField(blank=True, null=True)
+#     phone = models.CharField(max_length=50, blank=True, null=True)
+#     ntn = models.CharField(max_length=50, blank=True, null=True)
+#     strn = models.CharField(max_length=50, blank=True, null=True)
+#     pra = models.CharField(max_length=50, blank=True, null=True)
+
+#     def __str__(self):
+#         return self.name
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
