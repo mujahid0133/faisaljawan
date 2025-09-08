@@ -1,5 +1,19 @@
 from .models import Invoice
 from django.shortcuts import render
+from django.db.models import Prefetch
+
+# Bill report view: show all invoices in a table
+
+
+def bill_report(request):
+    ids = request.GET.get('ids')
+    qs = Invoice.objects.select_related('customer', 'vehicle').prefetch_related(
+        'items__product', 'items__category')
+    if ids:
+        id_list = [int(i) for i in ids.split(',') if i.isdigit()]
+        qs = qs.filter(id__in=id_list)
+    grand_total = sum(inv.total_incl_tax for inv in qs)
+    return render(request, "billreport.html", {"invoices": qs, "grand_total": grand_total})
 
 
 def invoice_pdf(request, pk):

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from home.views import invoice_pdf, invoice_pdf_goods, invoice_pdf_services
+from home.views import invoice_pdf, invoice_pdf_goods, invoice_pdf_services, bill_report
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,5 @@ urlpatterns = [
          invoice_pdf_goods, name="invoice_pdf_goods"),
     path("invoice/<int:pk>/pdf/services/",
          invoice_pdf_services, name="invoice_pdf_services"),
+    path("billreport/", bill_report, name="bill_report"),
 ]
