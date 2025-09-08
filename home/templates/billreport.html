@@ -159,7 +159,7 @@
           <tr>
             <th>No.</th>
             <th>Invoice #</th>
-            <th>Date</th> 
+            <th>Date</th>
             {% comment %}
             <th>Customer</th>
             {% endcomment %}
@@ -179,7 +179,7 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ invoice.invoice_no }}</td>
             <td>{{ invoice.date|date:"d-m-Y" }}</td>
-             {% comment %}
+            {% comment %}
             <td>{{ invoice.customer.name }}</td>
             {% endcomment %}
             <td>{{ invoice.vehicle.make }} ({{ invoice.vehicle.number }})</td>
@@ -280,6 +280,7 @@
             .save()
             .then(() => {
               btn.style.display = "";
+              backBtn.style.display = "";
             });
         });
     </script>
