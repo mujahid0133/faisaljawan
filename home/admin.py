@@ -66,6 +66,7 @@ def mark_as_paid(modeladmin, request, queryset):
 def mark_as_unpaid(modeladmin, request, queryset):
     queryset.update(status="unpaid")
 
+
 def download_complete_bill(modeladmin, request, queryset):
     links = [
         f"/invoice/{invoice.id}/pdf/?directdownload=true"
@@ -80,12 +81,15 @@ def download_complete_bill(modeladmin, request, queryset):
 
     return HttpResponse(html)
 
+
 download_complete_bill.short_description = "Download Complete Bill for selected invoices"
+
 
 def download_fbr_bill(modeladmin, request, queryset):
     links = [
         f"/invoice/{invoice.id}/pdf/goods/?directdownload=true"
         for invoice in queryset
+        if InvoiceItem.objects.filter(invoice=invoice, category=1).exists()
     ]
     html = "<script>"
     for link in links:
@@ -94,12 +98,15 @@ def download_fbr_bill(modeladmin, request, queryset):
 
     return HttpResponse(html)
 
+
 download_fbr_bill.short_description = "Download FBR Bill (Goods) for selected invoices"
+
 
 def download_pra_bill(modeladmin, request, queryset):
     links = [
         f"/invoice/{invoice.id}/pdf/services/?directdownload=true"
         for invoice in queryset
+        if InvoiceItem.objects.filter(invoice=invoice, category=2).exists()
     ]
 
     # Generate a simple HTML with JS to open all links
@@ -109,6 +116,8 @@ def download_pra_bill(modeladmin, request, queryset):
     html += "window.history.back();</script>"
 
     return HttpResponse(html)
+
+
 download_pra_bill.short_description = "Download PRA Bill (Services) for selected invoices"
 
 
@@ -126,7 +135,8 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_filter = ("status", "date", "customer", "vehicle")
     search_fields = ("invoice_no", "customer__name", "vehicle__number")
     exclude = ("status", "total_excl_tax", "total_tax", "total_incl_tax")
-    actions = [mark_as_paid, mark_as_unpaid, show_invoices_billreport, download_complete_bill, download_fbr_bill, download_pra_bill]
+    actions = [mark_as_paid, mark_as_unpaid, show_invoices_billreport,
+               download_complete_bill, download_fbr_bill, download_pra_bill]
 
     def formatted_total(self, obj):
         return format_html("₨ {}", f"{obj.total_incl_tax:.2f}")
