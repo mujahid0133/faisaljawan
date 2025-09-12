@@ -159,6 +159,8 @@
           <tr>
             <th>No.</th>
             <th>Invoice #</th>
+            <th>FBR-Invoice #</th>
+            <th>PRA-Invoice #</th>
             <th>Date</th>
             {% comment %}
             <th>Customer</th>
@@ -178,6 +180,8 @@
           <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ invoice.invoice_no }}</td>
+            <td>F-{{ invoice.invoice_no }}</td>
+            <td>P-{{ invoice.invoice_no }}</td>
             <td>{{ invoice.date|date:"d-m-Y" }}</td>
             {% comment %}
             <td>{{ invoice.customer.name }}</td>
@@ -233,7 +237,7 @@
         </tbody>
         <tfoot>
           <tr class="total-row">
-            <td colspan="4" style="text-align: center; font-weight: bold">
+            <td colspan="6" style="text-align: center; font-weight: bold">
               Grand Total
             </td>
             <td style="font-weight: bold">{{ grand_total|floatformat:2 }}</td>
