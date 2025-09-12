@@ -759,7 +759,9 @@
       >
         Download PDF
       </button>
-      <div class="company-title">M. FAZAL ELLAHI &amp; SONS</div>
+      <div class="company-title" style="margin-top: 1in">
+        M. FAZAL ELLAHI &amp; SONS
+      </div>
       <div class="subtitle">AUTOMOBILE ENGINEER</div>
       <div class="company-info">
         Behind Dyal Singh Mansion, The Mall, Lahore.<br />
@@ -926,7 +928,8 @@
             pagebreak: { mode: ["avoid-all", "css", "legacy"] },
           })
           .from(document.getElementById("invoice-content"))
-          .save().then(() => {
+          .save()
+          .then(() => {
             window.close();
           });
       }
