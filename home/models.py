@@ -87,6 +87,12 @@ class Invoice(models.Model):
         self.total_incl_tax = sum(item.price_incl_tax for item in self.items.all())
         super().save(update_fields=["total_excl_tax", "total_tax", "total_incl_tax"])
 
+    def has_goods(self):
+        return self.items.filter(product__category__name__iexact="goods").exists()
+
+    def has_services(self):
+        return self.items.filter(product__category__name__iexact="service").exists()
+    
     def __str__(self):
         return f"{self.invoice_no} - {self.customer.name}"
 

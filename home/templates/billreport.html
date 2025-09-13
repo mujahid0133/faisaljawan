@@ -154,6 +154,17 @@
       <h2 style="text-align: center; margin-top: 1em">
         All Invoices Bill Report
       </h2>
+      <div style="display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span >
+    <span style="color: #1a237e; font-weight: bold;">Date: </span><span>{{ current_date|date:"d-m-Y" }}</span>
+  </span>
+  {% if single_customer_name %}
+    <span class="customer-name">
+      <span style="color: #1a237e; font-weight: bold">Customer:&nbsp;</span> {{ single_customer_name }}
+    </span>
+  {% endif %}
+  
+</div>
       <table class="bill-table">
         <thead>
           <tr>
@@ -177,11 +188,17 @@
         </thead>
         <tbody>
           {% for invoice in invoices %}
+
           <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ invoice.invoice_no }}</td>
-            <td>F-{{ invoice.invoice_no }}</td>
-            <td>P-{{ invoice.invoice_no }}</td>
+            <td>
+              {% if invoice.has_goods %} F-{{ invoice.invoice_no }} {% else %} -
+              {% endif %}
+            </td>
+            <td>
+              {% if invoice.has_services %} P-{{ invoice.invoice_no }} {% else %} - {% endif %}
+            </td>
             <td>{{ invoice.date|date:"d-m-Y" }}</td>
             {% comment %}
             <td>{{ invoice.customer.name }}</td>

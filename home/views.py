@@ -1,6 +1,7 @@
 from .models import Invoice
 from django.shortcuts import render
 from django.db.models import Prefetch
+from django.utils import timezone
 
 # Bill report view: show all invoices in a table
 
@@ -13,7 +14,21 @@ def bill_report(request):
         id_list = [int(i) for i in ids.split(',') if i.isdigit()]
         qs = qs.filter(id__in=id_list)
     grand_total = sum(inv.total_incl_tax for inv in qs)
-    return render(request, "billreport.html", {"invoices": qs, "grand_total": grand_total})
+    customer_ids = set(inv.customer_id for inv in qs)
+    single_customer_name = None
+    if len(customer_ids) == 1 and qs:
+        single_customer_name = qs[0].customer.name
+    current_date = timezone.now()
+    return render(
+        request,
+        "billreport.html",
+        {
+            "invoices": qs,
+            "grand_total": grand_total,
+            "single_customer_name": single_customer_name,
+            "current_date": current_date,  # <-- Add this line
+        }
+    )
 
 
 def invoice_pdf(request, pk):
