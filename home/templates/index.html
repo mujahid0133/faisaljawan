@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% load custom_filters %}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -759,7 +760,7 @@
       >
         Download PDF
       </button>
-      <div class="company-title" style="margin-top:75px">
+      <div class="company-title" style="margin-top: 75px">
         M. FAZAL ELLAHI &amp; SONS
       </div>
       <div class="subtitle">AUTOMOBILE ENGINEER</div>
@@ -809,11 +810,12 @@
           <tr>
             <th style="width: 45px">No.</th>
             <th style="width: 32%">Description</th>
-            <th style="width: 60px">QTY</th>
+            <th style="width: 50px">QTY</th>
+            <th style="width: 85px">Unit</th>
             <th style="width: 100px">Price<br />(excl. tax)</th>
-            <th style="width: 60px">TAX</th>
+            <th style="width: 50px">TAX</th>
             <th style="width: 90px">Total Tax</th>
-            <th style="width: 110px">Price<br />(incl. tax)</th>
+            <th style="width: 100px">Price<br />(incl. tax)</th>
           </tr>
         </thead>
         <tbody>
@@ -822,7 +824,8 @@
             <td>{{ forloop.counter }}</td>
             <td class="desc">{{ item.product.name }}</td>
             <td>{{ item.qty }}</td>
-            <td>{{ item.price_excl_tax|floatformat:2 }}</td>
+            <td class="type">{{ item.price_excl_tax|floatformat:2 }}</td>
+            <td>{{ item.price_excl_tax|mul:item.qty|floatformat:2 }}</td>
             <td>
               {% if item.category %}{{ item.category.rate|floatformat:0 }}%{% else %}-{% endif %}
             </td>
@@ -839,7 +842,7 @@
         </tbody>
         <tfoot>
           <tr class="total-row">
-            <td colspan="3">TOTAL</td>
+            <td colspan="4">TOTAL</td>
             <td>{{ subtotal|floatformat:2 }}</td>
             <td></td>
             <td>{{ total_tax|floatformat:2 }}</td>
