@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% load custom_filters %}
+  {% load static custom_filters %}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -853,9 +853,13 @@
       <div class="signature-row">
         <span class="signature-label">Signature:</span>
       </div>
-      <div class="footer-note">
-        Customer's vehicles driven and stored entirely at customer's own risk as
+      <div class="footer-note" style= "display: flex; justify-content: space-between; align-items: end;">
+        <span>
+          Customer's vehicles driven and stored entirely at customer's own risk as
         regard fire, theft/damage
+        </span>
+        <div style="float: right; ">
+            {% if special_case == "goods" %}<img width="150px" src="{% static 'images/fbr_icon.png' %}" alt="Goods" />{% endif %}{% if special_case == "services" %}<img width="150px" src="{% static 'images/pra_icon.png' %}" alt="Services" />{% endif %}</div>
       </div>
     </div>
     <!-- html2pdf.js from CDN -->
