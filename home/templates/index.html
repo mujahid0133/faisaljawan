@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   {% load static custom_filters %}
   <head>
@@ -776,7 +776,9 @@
         <div>
           <span class="invoice-label">INVOICE #:</span>
           <span class="invoice-number">
-            {% if special_case == "goods" %}F-{% endif %}{% if special_case == "services" %}P-{% endif %}{{ invoice.invoice_no }}</span>
+            {% if special_case == "goods" %}F-{% endif %}{% if special_case ==
+            "services" %}P-{% endif %}{{ invoice.invoice_no }}</span
+          >
         </div>
         <div>
           <span class="invoice-label">Date:</span>
@@ -827,7 +829,8 @@
             <td class="type">{{ item.price_excl_tax|floatformat:2 }}</td>
             <td>{{ item.price_excl_tax|mul:item.qty|floatformat:2 }}</td>
             <td>
-              {% if item.category %}{{ item.category.rate|floatformat:0 }}%{% else %}-{% endif %}
+              {% if item.category %}{{ item.category.rate|floatformat:0 }}%{%
+              else %}-{% endif %}
             </td>
             <td>{{ item.tax_amount|floatformat:2 }}</td>
             <td>{{ item.price_incl_tax|floatformat:2 }}</td>
@@ -853,17 +856,29 @@
       <div class="signature-row">
         <span class="signature-label">Signature:</span>
       </div>
-      <div class="footer-note" style= "display: flex; justify-content: space-between; align-items: end;">
+      <div
+        class="footer-note"
+        style="display: flex; justify-content: space-between; align-items: end"
+      >
         <span>
-          Customer's vehicles driven and stored entirely at customer's own risk as
-        regard fire, theft/damage
+          Customer's vehicles driven and stored entirely at customer's own risk
+          as regard fire, theft/damage
         </span>
-        <div style="float: right;">
-            {% if special_case == "goods" %}<img width="100px" src="{% static 'images/fbr_icon.png' %}" alt="Goods" />{% endif %}{% if special_case == "services" %}<img width="100px" src="{% static 'images/pra_icon.png' %}" alt="Services" />{% endif %}</div>
+        <div style="float: right">
+          {% if special_case == "goods" %}<img
+            width="100px"
+            src="{% static 'images/fbr_icon.png' %}"
+            alt="Goods"
+          />{% endif %}{% if special_case == "services" %}<img
+            width="100px"
+            src="{% static 'images/pra_icon.png' %}"
+            alt="Services"
+          />{% endif %}
+        </div>
       </div>
     </div>
-    <!-- html2pdf.js from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- html2pdf.js local -->
+    <script src="{% static 'js/html2pdf.bundle.min.js' %}"></script>
     <script>
       // Hide button in print
       const style = document.createElement("style");
