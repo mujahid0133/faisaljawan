@@ -644,21 +644,19 @@
         word-break: break-word;
         overflow-wrap: break-word;
       }
-      .items-table,
-      .items-table thead,
-      .items-table tbody,
-      .items-table tfoot,
-      .items-table tr,
-      .items-table td,
-      .items-table th {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
       .items-table thead {
         display: table-header-group;
       }
       .items-table tfoot {
         display: table-footer-group;
+      }
+      .items-table tbody tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      .items-table tbody {
+        orphans: 3;
+        widows: 3;
       }
       .items-table th,
       .items-table td {
@@ -666,6 +664,7 @@
         padding: 8px 10px;
         font-size: 1em;
         text-align: center;
+        vertical-align: middle;
       }
       .items-table th {
         background: #e3eafc;
@@ -722,7 +721,7 @@
       }
       @page {
         size: A4;
-        margin: 12mm 10mm 18mm;
+        margin: 12mm 10mm 25mm;
       }
       @media print {
         html,
@@ -732,17 +731,33 @@
         .invoice-a4 {
           width: 190mm;
           box-shadow: none;
+          padding-bottom: 30mm;
         }
         .items-table {
-          border-collapse: collapse;
-          border-spacing: 0;
-          border: none;
-          border-radius: 0;
-          box-shadow: none;
-          margin-bottom: 10mm;
+          border-collapse: collapse !important;
+          border-spacing: 0 !important;
+          border: none !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+          margin-bottom: 20mm;
+        }
+        .items-table tbody {
+          border-top: 2px solid #1a237e !important;
+        }
+        .items-table td,
+        .items-table th {
+          border: 1px solid #bebebeff !important;
+          padding: 8px 10px !important;
+        }
+        .items-table tbody tr {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+        .items-table tbody tr:nth-child(n + 10) {
+          page-break-before: auto;
         }
         .footer-note {
-          margin-top: 12mm;
+          margin-top: 20mm;
         }
       }
     </style>
