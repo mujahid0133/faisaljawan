@@ -818,8 +818,7 @@
         <div>
           <span class="invoice-label">INVOICE #:</span>
           <span class="invoice-number">
-            {% if special_case == "goods" %}F-{% endif %}{% if special_case ==
-            "services" %}P-{% endif %}{{ invoice.invoice_no }}</span
+            {% if special_case == "goods" %}F-{% endif %}{% if special_case == "services" %}P-{% endif %}{{ invoice.invoice_no }}</span
           >
         </div>
         <div>
@@ -871,8 +870,7 @@
             <td class="type">{{ item.price_excl_tax|floatformat:2 }}</td>
             <td>{{ item.price_excl_tax|mul:item.qty|floatformat:2 }}</td>
             <td>
-              {% if item.category %}{{ item.category.rate|floatformat:0 }}%{%
-              else %}-{% endif %}
+              {% if item.category %}{{ item.category.rate|floatformat:0 }}%{% else %}-{% endif %}
             </td>
             <td>{{ item.tax_amount|floatformat:2 }}</td>
             <td>{{ item.price_incl_tax|floatformat:2 }}</td>
