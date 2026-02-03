@@ -644,6 +644,22 @@
         word-break: break-word;
         overflow-wrap: break-word;
       }
+      .items-table,
+      .items-table thead,
+      .items-table tbody,
+      .items-table tfoot,
+      .items-table tr,
+      .items-table td,
+      .items-table th {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .items-table thead {
+        display: table-header-group;
+      }
+      .items-table tfoot {
+        display: table-footer-group;
+      }
       .items-table th,
       .items-table td {
         border: 1px solid #bebebeff;
@@ -679,12 +695,10 @@
         font-weight: normal;
       }
       .footer-note {
-        position: absolute;
-        left: 20px;
-        bottom: 70px;
+        margin: 1.2em 20px 0;
         font-size: 0.85em;
         color: #222;
-        width: 90%;
+        width: calc(100% - 40px);
         text-align: left;
       }
       .fbr-footer {
@@ -706,16 +720,29 @@
         font-weight: 500;
         margin-left: 10px;
       }
+      @page {
+        size: A4;
+        margin: 12mm 10mm 18mm;
+      }
       @media print {
         html,
         body {
           width: 210mm;
-          height: 297mm;
         }
         .invoice-a4 {
           width: 190mm;
-          min-height: 277mm;
           box-shadow: none;
+        }
+        .items-table {
+          border-collapse: collapse;
+          border-spacing: 0;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          margin-bottom: 10mm;
+        }
+        .footer-note {
+          margin-top: 12mm;
         }
       }
     </style>
@@ -905,12 +932,12 @@
           // Generate PDF
           html2pdf()
             .set({
-              margin: 0,
+              margin: [12, 10, 18, 10],
               filename: filename,
               image: { type: "jpeg", quality: 0.98 },
               html2canvas: { scale: 2, useCORS: true },
               jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-              pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+              pagebreak: { mode: ["css", "legacy"], avoid: ["tr"] },
             })
             .from(document.getElementById("invoice-content"))
             .save()
@@ -942,12 +969,12 @@
         // Generate PDF
         html2pdf()
           .set({
-            margin: 0,
+            margin: [12, 10, 18, 10],
             filename: filename,
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+            pagebreak: { mode: ["css", "legacy"], avoid: ["tr"] },
           })
           .from(document.getElementById("invoice-content"))
           .save()

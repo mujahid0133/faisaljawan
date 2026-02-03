@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,21 +19,18 @@
       html,
       body {
         width: 210mm;
-        height: 297mm;
         margin: 0;
         padding: 0;
         background: #f8fafd;
       }
       .invoice-a4 {
         width: 190mm;
-        min-height: 277mm;
         margin: 0 auto;
         background: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.1);
         padding: 24px 12px;
         position: relative;
-        overflow: hidden;
       }
       .company-title {
         text-align: center;
@@ -67,6 +64,26 @@
         background: #fff;
         box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
       }
+      .bill-table tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .bill-table,
+      .bill-table thead,
+      .bill-table tbody,
+      .bill-table tfoot,
+      .bill-table tr,
+      .bill-table td,
+      .bill-table th {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .bill-table thead {
+        display: table-header-group;
+      }
+      .bill-table tfoot {
+        display: table-footer-group;
+      }
       .bill-table th,
       .bill-table td {
         border: 1px solid #e0e0e0;
@@ -95,16 +112,21 @@
         color: #222;
         text-align: left;
       }
+      @page {
+        size: A4;
+        margin: 12mm 10mm 18mm;
+      }
       @media print {
         html,
         body {
           width: 210mm;
-          height: 297mm;
         }
         .invoice-a4 {
           width: 190mm;
-          min-height: 277mm;
           box-shadow: none;
+        }
+        .bill-table {
+          margin-bottom: 10mm;
         }
       }
     </style>
@@ -149,22 +171,33 @@
       >
         Download PDF
       </button>
-      <div class="company-title" style="margin-top: 50px">M. FAZAL ELLAHI &amp; SONS</div>
+      <div class="company-title" style="margin-top: 50px">
+        M. FAZAL ELLAHI &amp; SONS
+      </div>
       <div class="subtitle">AUTOMOBILE ENGINEER</div>
       <h2 style="text-align: center; margin-top: 1em">
         All Invoices Bill Report
       </h2>
-      <div style="display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <span >
-    <span style="color: #1a237e; font-weight: bold;">Date: </span><span>{{ current_date|date:"d-m-Y" }}</span>
-  </span>
-  {% if single_customer_name %}
-    <span class="customer-name">
-      <span style="color: #1a237e; font-weight: bold">Customer:&nbsp;</span> {{ single_customer_name }}
-    </span>
-  {% endif %}
-  
-</div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        "
+      >
+        <span>
+          <span style="color: #1a237e; font-weight: bold">Date: </span
+          ><span>{{ current_date|date:"d-m-Y" }}</span>
+        </span>
+        {% if single_customer_name %}
+        <span class="customer-name">
+          <span style="color: #1a237e; font-weight: bold">Customer:&nbsp;</span>
+          {{ single_customer_name }}
+        </span>
+        {% endif %}
+      </div>
       <table class="bill-table">
         <thead>
           <tr>
@@ -290,12 +323,12 @@
           // Generate PDF
           html2pdf()
             .set({
-              margin: 0,
+              margin: [12, 10, 18, 10],
               filename: filename,
               image: { type: "jpeg", quality: 0.98 },
               html2canvas: { scale: 2, useCORS: true },
               jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-              pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+              pagebreak: { mode: ["css", "legacy"], avoid: ["tr"] },
             })
             .from(document.getElementById("billreport-content"))
             .save()
