@@ -945,6 +945,7 @@
       document.head.appendChild(style);
 
       const ROWS_PER_PAGE = 9;
+      const ROWS_PER_PAGE_SUBSEQUENT = 14; // More rows on subsequent pages since no details table
       const MAX_TABLE_HEIGHT = 500; // Maximum height in pixels for items table per page
 
       function paginateInvoice() {
@@ -967,12 +968,16 @@
         const calculatedRowsPerPage = Math.floor(
           availableHeight / sampleRowHeight,
         );
-        const actualRowsPerPage = Math.max(
+        const actualRowsPerPageFirst = Math.max(
           5,
           Math.min(calculatedRowsPerPage, ROWS_PER_PAGE),
         );
+        const actualRowsPerPageSubsequent = Math.max(
+          5,
+          Math.min(calculatedRowsPerPage, ROWS_PER_PAGE_SUBSEQUENT),
+        );
 
-        if (rows.length <= actualRowsPerPage) return;
+        if (rows.length <= actualRowsPerPageFirst) return;
 
         const thead = table.querySelector("thead");
         const tfoot = table.querySelector("tfoot");
@@ -980,8 +985,11 @@
         const tfootHtml = tfoot ? tfoot.outerHTML : "";
 
         const chunks = [];
-        for (let i = 0; i < rows.length; i += actualRowsPerPage) {
-          chunks.push(rows.slice(i, i + actualRowsPerPage));
+        let chunkIndex = 0;
+        for (let i = 0; i < rows.length; i += (chunkIndex === 0 ? actualRowsPerPageFirst : actualRowsPerPageSubsequent)) {
+          const rowsPerThisChunk = chunkIndex === 0 ? actualRowsPerPageFirst : actualRowsPerPageSubsequent;
+          chunks.push(rows.slice(i, i + rowsPerThisChunk));
+          chunkIndex++;
         }
 
         tbody.innerHTML = "";
@@ -1003,6 +1011,16 @@
           if (header) {
             const headerClone = header.cloneNode(true);
             headerClone.removeAttribute("id");
+            // Remove details table from subsequent pages
+            const detailsTable = headerClone.querySelector(".details-table");
+            if (detailsTable) {
+              detailsTable.remove();
+            }
+            // Also remove the section titles
+            const sectionTitles = headerClone.querySelector(".section-titles");
+            if (sectionTitles) {
+              sectionTitles.remove();
+            }
             page.appendChild(headerClone);
           }
 
