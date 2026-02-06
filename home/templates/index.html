@@ -1037,6 +1037,48 @@
       } else {
         paginateInvoice();
       }
+
+      // Direct PDF download if 'directdownload=true' in URL
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      function triggerDirectDownload() {
+        // Get invoice number for filename
+        let invoiceNo = "";
+        const invoiceNumberElem = document.querySelector(".invoice-number");
+        if (invoiceNumberElem) {
+          invoiceNo = invoiceNumberElem.textContent.trim().replace(/\s+/g, "");
+        }
+        let filename = invoiceNo ? `Invoice_${invoiceNo}.pdf` : "Invoice.pdf";
+        // Hide the buttons before generating PDF
+        const btn = document.getElementById("download-pdf-btn");
+        if (btn) btn.style.display = "none";
+        const backBtn = document.getElementById("back-admin-btn");
+        if (backBtn) backBtn.style.display = "none";
+        // Generate PDF
+        html2pdf()
+          .set({
+            margin: [10, 10, 10, 10],
+            filename: filename,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+            pagebreak: { mode: ["css", "legacy"], avoid: ["tr"] },
+          })
+          .from(document.getElementById("invoice-content"))
+          .save()
+          .then(() => {
+            window.close();
+          });
+      }
+
+      if (getQueryParam("directdownload") === "true") {
+        // Wait for pagination to complete before downloading
+        setTimeout(triggerDirectDownload, 500);
+      }
+
       // Download PDF button handler
       document
         .getElementById("download-pdf-btn")
@@ -1072,42 +1114,6 @@
               backBtn.style.display = "";
             });
         });
-
-      // Direct PDF download if 'directdownload=true' in URL
-      function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-      }
-
-      if (getQueryParam("directdownload") === "true") {
-        // Get invoice number for filename
-        let invoiceNo = "";
-        const invoiceNumberElem = document.querySelector(".invoice-number");
-        if (invoiceNumberElem) {
-          invoiceNo = invoiceNumberElem.textContent.trim().replace(/\s+/g, "");
-        }
-        let filename = invoiceNo ? `Invoice_${invoiceNo}.pdf` : "Invoice.pdf";
-        // Hide the buttons before generating PDF
-        const btn = document.getElementById("download-pdf-btn");
-        if (btn) btn.style.display = "none";
-        const backBtn = document.getElementById("back-admin-btn");
-        if (backBtn) backBtn.style.display = "none";
-        // Generate PDF
-        html2pdf()
-          .set({
-            margin: [10, 10, 10, 10],
-            filename: filename,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            pagebreak: { mode: ["css", "legacy"], avoid: ["tr"] },
-          })
-          .from(document.getElementById("invoice-content"))
-          .save()
-          .then(() => {
-            window.close();
-          });
-      }
     </script>
   </body>
 </html>
