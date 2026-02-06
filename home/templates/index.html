@@ -985,21 +985,12 @@
         const tfootHtml = tfoot ? tfoot.outerHTML : "";
 
         const chunks = [];
-        let chunkIndex = 0;
-        for (
-          let i = 0;
-          i < rows.length;
-          i +=
-            chunkIndex === 0
-              ? actualRowsPerPageFirst
-              : actualRowsPerPageSubsequent
-        ) {
-          const rowsPerThisChunk =
-            chunkIndex === 0
-              ? actualRowsPerPageFirst
-              : actualRowsPerPageSubsequent;
-          chunks.push(rows.slice(i, i + rowsPerThisChunk));
-          chunkIndex++;
+        let index = 0;
+        chunks.push(rows.slice(index, index + actualRowsPerPageFirst));
+        index += actualRowsPerPageFirst;
+        while (index < rows.length) {
+          chunks.push(rows.slice(index, index + actualRowsPerPageSubsequent));
+          index += actualRowsPerPageSubsequent;
         }
 
         tbody.innerHTML = "";
