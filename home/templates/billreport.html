@@ -31,14 +31,8 @@
         box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.1);
         padding: 24px 12px;
         position: relative;
-      }
-      .invoice-page {
-        page-break-after: always;
-        break-after: page;
-      }
-      .invoice-page:last-child {
-        page-break-after: auto;
-        break-after: auto;
+        overflow: hidden;
+        margin-bottom: 10mm;
       }
       .company-title {
         text-align: center;
@@ -181,7 +175,7 @@
           Download PDF
         </button>
         <div id="billreport-header">
-          <div class="company-title" style="margin-top: 50px">
+          <div class="company-title" style="margin-top: 20px">
             M. FAZAL ELLAHI &amp; SONS
           </div>
           <div class="subtitle">AUTOMOBILE ENGINEER</div>
@@ -410,7 +404,7 @@
               image: { type: "jpeg", quality: 0.98 },
               html2canvas: { scale: 2, useCORS: true },
               jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-              pagebreak: { mode: ["css", "legacy"], avoid: ["tr"] },
+              pagebreak: { mode: ["avoid-all", "css", "legacy"] },
             })
             .from(document.getElementById("billreport-content"))
             .save()
